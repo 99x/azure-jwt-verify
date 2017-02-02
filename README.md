@@ -20,8 +20,13 @@ You need to define the following constants based on your Azure Active Directory 
 ```
 var azureJWT = requre('azure-jwt-verify');
 var b2cMetaURL = ""; // You can find this url in Azure Active Directory B2C Section
+const config = {
+    JWK_URI: "",
+    ISS: "",
+    AUD: ""
+};
 
-azureJWT.verify('YOUR-JWT-TOKEN', b2cMetaURL).then(function(decoded){
+azureJWT.verify('YOUR-JWT-TOKEN', config).then(function(decoded){
 // success callback
 
 }, function(error){
@@ -29,6 +34,9 @@ azureJWT.verify('YOUR-JWT-TOKEN', b2cMetaURL).then(function(decoded){
 
 })
 ```
+* JWK_URI and the ISS(Issuer) can be obtained from the metadata endpoint of the policies created in the B2C tenant.
+* AUD(Audience) is the Client ID of the application accessing the tenant.
+
 Verifying the jwt token
 
 ## Links

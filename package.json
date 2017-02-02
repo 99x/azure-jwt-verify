@@ -1,0 +1,36 @@
+{
+  "name": "azure-jwt-verify",
+  "version": "1.0.0",
+  "description": "Verify JWT Token issued by Azure Active Directory B2C",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/99xt/azure-jwt-verify.git"
+  },
+  "keywords": [
+    "azure",
+    "b2c",
+    "jwt",
+    "verify"
+  ],
+  "author": "99xtechnology.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/99xt/azure-jwt-verify/issues"
+  },
+  "homepage": "https://github.com/99xt/azure-jwt-verify#readme",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "jsonwebtoken": "^7.2.1",
+    "lodash": "^4.17.4",
+    "request": "^2.79.0",
+    "rsa-pem-from-mod-exp": "^0.8.4"
+  }
+}
