@@ -18,11 +18,10 @@ azure-jwt-verify
 You need to define the following constants based on your Azure Active Directory B2C application configurations
 
 ```
-const AZURE_PUBLIC_KEYS_URL= ""
+var azureJWT = requre('azure-jwt-verify');
+var b2cMetaURL = ""; // You can find this url in Azure Active Directory B2C Section
 
-var azureJWt = requre('azure-jwt-verify');
-
-azureJWT.verify('YOUR-JWT-TOKEN').then(function(decoded){
+azureJWT.verify('YOUR-JWT-TOKEN', b2cMetaURL).then(function(decoded){
 // success callback
 
 }, function(error){
