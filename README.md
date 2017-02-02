@@ -19,6 +19,7 @@ You need to define the following constants based on your Azure Active Directory 
 
 ```
 var azureJWT = requre('azure-jwt-verify');
+
 var b2cMetaURL = ""; // You can find this url in Azure Active Directory B2C Section
 const config = {
     JWK_URI: "",
