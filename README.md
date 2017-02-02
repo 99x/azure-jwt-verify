@@ -19,6 +19,16 @@ You need to define the following constants based on your Azure Active Directory 
 
 ```
 const AZURE_PUBLIC_KEYS_URL= ""
+
+var azureJWt = requre('azure-jwt-verify');
+
+azureJWT.verify('YOUR-JWT-TOKEN').then(function(decoded){
+// success callback
+
+}, function(error){
+// error callback
+
+})
 ```
 Verifying the jwt token
 
