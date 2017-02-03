@@ -17,17 +17,27 @@ azure-jwt-verify
 ## Using Azure JWT Verify in your code
 You need to define the following constants based on your Azure Active Directory B2C application configurations
 
-```
+###Initialize module
+```javascript
 var azureJWT = requre('azure-jwt-verify');
 
-var b2cMetaURL = ""; // You can find this url in Azure Active Directory B2C Section
+```
+
+###Configuration and the JWT to verify
+```javascript
+var jwtToken = "YOUR_JWT_TOKEN_TO_VERIFY"; // You can find this url in Azure Active Directory B2C Section
 const config = {
     JWK_URI: "",
     ISS: "",
     AUD: ""
 };
+```
+* JWK_URI and the ISS(Issuer) can be obtained from the metadata endpoint of the policies created in the B2C tenant.
+* AUD(Audience) is the Client ID of the application accessing the tenant.
 
-azureJWT.verify('YOUR-JWT-TOKEN', config).then(function(decoded){
+###Verify Function
+```javascript
+azureJWT.verify(jwtToken, config).then(function(decoded){
 // success callback
 
 }, function(error){
@@ -35,10 +45,6 @@ azureJWT.verify('YOUR-JWT-TOKEN', config).then(function(decoded){
 
 })
 ```
-* JWK_URI and the ISS(Issuer) can be obtained from the metadata endpoint of the policies created in the B2C tenant.
-* AUD(Audience) is the Client ID of the application accessing the tenant.
-
-Verifying the jwt token
 
 ## Links
 * [Azure Active Directory B2C](https://azure.microsoft.com/en-us/services/active-directory-b2c/)
