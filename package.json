@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "Verify JWT Token issued by Azure Active Directory B2C",
   "main": "index.js",
-  "directories": {
-    "example": "examples",
-    "test": "test"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
