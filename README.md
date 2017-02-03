@@ -1,7 +1,7 @@
 azure-jwt-verify
 =================================
 
-[![npm version](https://badge.fury.io/js/azure-jwt-verify.svg)](https://badge.fury.io/js/azure-jwt-verify)
+[![npm version](https://badge.fury.io/js/azure-jwt-verify.svg)](https://www.npmjs.com/package/azure-jwt-verify)
 [![license](https://img.shields.io/npm/l/serverless-dynamodb-local.svg)](https://www.npmjs.com/package/serverless-dynamodb-local)
 
 ## This Plugin Requires
