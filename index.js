@@ -5,6 +5,7 @@ const _ = require('lodash');
 const getPem = require('rsa-pem-from-mod-exp');
 let publicKeys = {};
 
+// verify the jwtToken against the given configuration
 exports.verify = function(jwtToken, config) {
 
     return new BbPromise(function(resolve, reject) {
@@ -36,8 +37,9 @@ exports.verify = function(jwtToken, config) {
     });
 }
 
+// Validate the jwt Token with the audience and the issuer
 let verifyJwt = function(jwtToken, publicKey, aud, iss) {
-        return new Promise(function(resolve, reject) {
+        return new BbPromise(function(resolve, reject) {
             jwt.verify(jwtToken, publicKey, { algorithms: ['RS256'], audience: aud, issuer: iss }, function(error, decoded) {
                 if (!error) {
                     resolve(decoded);
@@ -47,13 +49,14 @@ let verifyJwt = function(jwtToken, publicKey, aud, iss) {
             });
         });
     },
+    // fetch publicKeys (mod and exp) from jwks_uri if there are no current kid matching
     getPublicKeys = function(JWK_URI, jwtKid) {
         if (hasPublicKey(jwtKid)) {
-            return new Promise(function(resolve, reject) {
+            return new BbPromise(function(resolve, reject) {
                 resolve(publicKeys);
             });
         } else {
-            return new Promise(function(resolve, reject) {
+            return new BbPromise(function(resolve, reject) {
                 request(JWK_URI, function(error, response, body) {
                     if (!error && response.statusCode == 200) {
                         let keys = JSON.parse(body).keys;
@@ -66,12 +69,13 @@ let verifyJwt = function(jwtToken, publicKey, aud, iss) {
             });
         }
     },
+    // generate and cache the rsa public key from modulus exponent
     updatePublicKeys = function(b2cKeys) {
         _.forEach(b2cKeys, function(value) {
             publicKeys[value.kid] = getPem(value.n, value.e)
         });
     },
-
+    // retunrs the public key for the given kid from the cached keys
     getPublicKey = function(jwtKid) {
         if (publicKeys.hasOwnProperty(jwtKid)) {
             return publicKeys[jwtKid];
@@ -79,6 +83,7 @@ let verifyJwt = function(jwtToken, publicKey, aud, iss) {
             return false;
         }
     },
+    // check if the kid has a public key 
     hasPublicKey = function(jwtKid) {
         return publicKeys.hasOwnProperty(jwtKid);
     }
