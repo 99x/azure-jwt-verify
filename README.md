@@ -19,7 +19,7 @@ You need to define the following constants based on your Azure Active Directory 
 
 ###Initialize module
 ```javascript
-var azureJWT = requre('azure-jwt-verify');
+var azureJWT = require('azure-jwt-verify');
 
 ```
 
