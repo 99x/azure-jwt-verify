@@ -4,64 +4,64 @@ const request = require('request');
 const _ = require('lodash');
 const getPem = require('rsa-pem-from-mod-exp');
 
-let publicKeys = {};
+const publicKeys = {};
 
 // Validate the jwt Token with the audience and the issuer
-let verifyJwt = function(jwtToken, publicKey, aud, iss) {
+const verifyJwt = function verifyJwt(jwtToken, publicKey, aud, iss) {
+    return new BbPromise(function(resolve, reject) {
+        jwt.verify(jwtToken, publicKey, 
+                   { algorithms: ['RS256'], audience: aud, issuer: iss }, 
+                   function(error, decoded) {
+            if (!error) {
+                resolve(decoded);
+            } else {
+                reject(error);
+            }
+        });
+    });
+};
+
+// fetch publicKeys (mod and exp) from jwks_uri if there are no current kid matching
+const getPublicKeys = function getPublicKeys(JWK_URI, jwtKid) {
+    if (hasPublicKey(jwtKid)) {
         return new BbPromise(function(resolve, reject) {
-            jwt.verify(jwtToken, publicKey, 
-                       { algorithms: ['RS256'], audience: aud, issuer: iss }, 
-                       function(error, decoded) {
-                if (!error) {
-                    resolve(decoded);
+            resolve(publicKeys);
+        });
+    } else {
+        return new BbPromise(function(resolve, reject) {
+            request(JWK_URI, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    let keys = JSON.parse(body).keys;
+                    updatePublicKeys(keys);
+                    resolve(publicKeys);
                 } else {
-                    reject(error);
+                    reject(error)
                 }
             });
         });
-    },
-
-    // fetch publicKeys (mod and exp) from jwks_uri if there are no current kid matching
-    getPublicKeys = function(JWK_URI, jwtKid) {
-        if (hasPublicKey(jwtKid)) {
-            return new BbPromise(function(resolve, reject) {
-                resolve(publicKeys);
-            });
-        } else {
-            return new BbPromise(function(resolve, reject) {
-                request(JWK_URI, function(error, response, body) {
-                    if (!error && response.statusCode == 200) {
-                        let keys = JSON.parse(body).keys;
-                        updatePublicKeys(keys);
-                        resolve(publicKeys);
-                    } else {
-                        reject(error)
-                    }
-                });
-            });
-        }
-    },
+    }
+};
     
-    // generate and cache the rsa public key from modulus exponent
-    updatePublicKeys = function(b2cKeys) {
-        _.forEach(b2cKeys, function(value) {
-            publicKeys[value.kid] = getPem(value.n, value.e)
-        });
-    },
+// generate and cache the rsa public key from modulus exponent
+const updatePublicKeys = function(b2cKeys) {
+    _.forEach(b2cKeys, function(value) {
+        publicKeys[value.kid] = getPem(value.n, value.e)
+    });
+};
 
-    // retunrs the public key for the given kid from the cached keys
-    getPublicKey = function(jwtKid) {
-        if (publicKeys.hasOwnProperty(jwtKid)) {
-            return publicKeys[jwtKid];
-        } else {
-            return false;
-        }
-    },
+// retunrs the public key for the given kid from the cached keys
+const getPublicKey = function(jwtKid) {
+    if (publicKeys.hasOwnProperty(jwtKid)) {
+        return publicKeys[jwtKid];
+    } else {
+        return false;
+    }
+};
 
-    // check if the kid has a public key 
-    hasPublicKey = function(jwtKid) {
-        return publicKeys.hasOwnProperty(jwtKid);
-    };
+// check if the kid has a public key 
+const hasPublicKey = function(jwtKid) {
+    return publicKeys.hasOwnProperty(jwtKid);
+};
 
 // verify the jwtToken against the given configuration
 exports.verify = function(jwtToken, config) {
@@ -91,6 +91,5 @@ exports.verify = function(jwtToken, config) {
                 })
             }
         }
-
     });
 };
