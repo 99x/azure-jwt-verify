@@ -48,7 +48,7 @@ azureJWT.verify(jwtToken, config).then(function(decoded){
 
 ## Response Examples
 
-##### For valid and authorize JWT token.
+#### For valid and authorize JWT token.
 
 Response body:
 ```
@@ -75,7 +75,7 @@ Response body:
 }
 ```
 
-##### For valid but expired JWT token.
+#### For valid but expired JWT token.
 
 Response body:
 ```
@@ -89,7 +89,7 @@ Response body:
 }
 ```
 
-##### For invalid JWT token.
+#### For invalid JWT token.
 
 Response body:
 ```
