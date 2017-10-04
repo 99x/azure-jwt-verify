@@ -7,9 +7,17 @@ const getPem = require('rsa-pem-from-mod-exp');
 const publicKeys = {};
 
 // Validate the jwt Token with the audience and the issuer
-const verifyJwt = function verifyJwt(jwtToken, publicKey, aud, iss) {
+const verifyJwt = function verifyJwt(jwtToken, publicKey, aud, iss, options) {
   return new BbPromise(function (resolve, reject) {
-    jwt.verify(jwtToken, publicKey, { algorithms: ['RS256'], audience: aud, issuer: iss },
+    const jwtConfig = Object.assign(
+      { 
+        algorithms: ['RS256'],
+        audience: aud,
+        issuer: iss,
+      },
+      options
+    )
+    jwt.verify(jwtToken, publicKey, jwtConfig,
       function (error, decoded) {
         if (!error) {
           resolve(decoded);
@@ -76,7 +84,7 @@ exports.verify = function (jwtToken, config) {
         getPublicKeys(config.JWK_URI, jwtKid).then(function (response) {
           if (hasPublicKey(jwtKid)) {
             let publicKey = getPublicKey(jwtKid);
-            verifyJwt(jwtToken, publicKey, config.AUD, config.ISS).then(function (response) {
+            verifyJwt(jwtToken, publicKey, config.AUD, config.ISS, config.options).then(function (response) {
               resolve(JSON.stringify({ "status": "success", "message": response }));
             }).catch(function (error) {
               reject(JSON.stringify({ "status": "error", "message": error }));
