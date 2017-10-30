@@ -76,7 +76,7 @@ exports.verify = function (jwtToken, config) {
         getPublicKeys(config.JWK_URI, jwtKid).then(function (response) {
           if (hasPublicKey(jwtKid)) {
             let publicKey = getPublicKey(jwtKid);
-            verifyJwt(jwtToken, publicKey, config.AUD, config.ISS).then(function (response) {
+            return verifyJwt(jwtToken, publicKey, config.AUD, config.ISS).then(function (response) {
               resolve(JSON.stringify({ "status": "success", "message": response }));
             }).catch(function (error) {
               reject(JSON.stringify({ "status": "error", "message": error }));
