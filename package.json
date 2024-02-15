@@ -24,7 +24,7 @@
   "homepage": "https://github.com/99xt/azure-jwt-verify#readme",
   "dependencies": {
     "bluebird": "^3.4.7",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.4",
     "request": "^2.79.0",
     "rsa-pem-from-mod-exp": "^0.8.4"
